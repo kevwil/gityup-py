@@ -13,6 +13,7 @@ dependencies = [
 ]
 
 [tool.poetry]
+requires-poetry = ">=2.1"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.35.0"
@@ -42,7 +43,7 @@ poethepoet = 'poethepoet.plugin:PoetryPlugin'
 test = "pytest -s -v"
 _build = "poetry build"
 build = ["test", "_build"]
-check = ['style', 'lint', 'test']
+check = ['style', 'lint', 'test', 'cov']
 
 [tool.poe.tasks.clean]
 help = 'Remove generated files'
@@ -72,6 +73,10 @@ cmd = 'ruff check'
 [tool.poe.tasks.style]
 help = 'validate code base using black code style'
 cmd = 'black . --check --diff --color'
+
+[tool.poe.tasks.cov]
+help = 'check code coverage using pytest'
+cmd = 'pytest --cov'
 
 [tool.ruff]
 line-length = 120
