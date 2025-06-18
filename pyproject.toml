@@ -1,33 +1,40 @@
-[tool.poetry]
+[project]
 name = "gityup-py"
-version = "1.0.1"
+version = "1.0.2"
 description = "A small utility to update local git projects"
-authors = ["Kevin Williams <kevwil@gmail.com>"]
+authors = [
+    {name = "Kevin Williams",email = "kevwil@gmail.com"}
+]
+license = {text = "MIT"}
 readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "typer (>=0.16.0,<0.17.0)"
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-poetry = { version = '^1.0', allow-prereleases = true, optional = true }
-typer = "^0.15.3"
+[tool.poetry]
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = "^0.34.0"
+poethepoet = "^0.35.0"
 black = "^25.1.0"
-pytest = "^8.3.5"
-ruff = "^0.11.8"
+pytest-cov = "^6.2.1"
+ruff = "^0.12.0"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+# [tool.poetry.requires-plugins]
+# poetry-plugin-export = ">=1.8"
+
 #paste these in
-[tool.poetry.extras]
+[project.optional-dependencies]
 poetry_plugin = ['poetry']
 
-[tool.poetry.scripts]
+[project.scripts]
 poe = 'poethepoet:main'
 
-[tool.poetry.plugins.'poetry.application.plugin']
+[project.entry-points.'poetry.application.plugin']
 poethepoet = 'poethepoet.plugin:PoetryPlugin'
 
 
