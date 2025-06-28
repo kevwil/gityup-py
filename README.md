@@ -21,11 +21,20 @@ Keeping them up-to-date helps me not branch from an old commit ref as well as ke
 
 ## Development
 
+Project management is now handled using [uv](https://docs.astral.sh/uv/).
+
+### First time checkout
+
 ```bash
-poe clean
-poe check
-poe format
-poe build
+uv sync
+```
+
+### Man dev tasks
+
+```bash
+uv run poe clean
+uv run poe check
+uv build
 ```
 
 ## Other Languages
