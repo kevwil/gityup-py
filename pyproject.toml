@@ -1,125 +1,116 @@
 [project]
 name = "gityup-py"
-version = "1.0.2"
+version = "1.0.3"
 description = "A small utility to update local git projects"
-authors = [
-    {name = "Kevin Williams",email = "kevwil@gmail.com"}
-]
-license = {text = "MIT"}
-readme = "README.md"
+authors = [{ name = "Kevin Williams", email = "kevwil@gmail.com" }]
 requires-python = ">=3.13"
-dependencies = [
-    "typer (>=0.16.0,<0.17.0)"
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = ["typer (>=0.16.0,<0.17.0)"]
+
+[tool.uv]
+python-preference = "only-system"
+required-version = ">=0.7.16"
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.35.0,<0.36",
+    "black>=25.1.0,<26",
+    "pytest-cov>=6.2.1,<7",
+    "ruff>=0.12.0,<0.13",
 ]
-
-[tool.poetry]
-requires-poetry = ">=2.1"
-
-[tool.poetry.group.dev.dependencies]
-poethepoet = "^0.35.0"
-black = "^25.1.0"
-pytest-cov = "^6.2.1"
-ruff = "^0.12.0"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-# [tool.poetry.requires-plugins]
-# poetry-plugin-export = ">=1.8"
-
-#paste these in
-[project.optional-dependencies]
-poetry_plugin = ['poetry']
-
-[project.scripts]
-poe = 'poethepoet:main'
-
-[project.entry-points.'poetry.application.plugin']
-poethepoet = 'poethepoet.plugin:PoetryPlugin'
-
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.poe.tasks]
 test = "pytest -s -v"
-_build = "poetry build"
-build = ["test", "_build"]
-check = ['style', 'lint', 'test', 'cov']
+check = ["style", "lint", "format", "test", "cov"]
 
 [tool.poe.tasks.clean]
-help = 'Remove generated files'
-cmd = '''
+help = "Remove generated files"
+cmd = """
     # multiline commands including comments work too!
     rm -rf .pytest_cache
            .ruff_cache
            ./**/__pycache__
            dist
-  '''
+           .coverage
+  """
+
 [tool.poe.tasks.format]
-help = 'run formatting tools on the code base'
-sequence = ['format-ruff', 'format-black']
+help = "run formatting tools on the code base"
+sequence = ["format-ruff", "format-black"]
 
 [tool.poe.tasks.format-ruff]
-help = 'run ruff formatter on code base'
-cmd = 'ruff check . --fix-only'
+help = "run ruff formatter on code base"
+cmd = "ruff check . --fix-only"
 
 [tool.poe.tasks.format-black]
-help = 'run black formatter on the code base'
-cmd = 'black .'
+help = "run black formatter on the code base"
+cmd = "black ."
 
 [tool.poe.tasks.lint]
-help = 'evaluate ruff rules'
-cmd = 'ruff check'
+help = "evaluate ruff rules"
+cmd = "ruff check"
 
 [tool.poe.tasks.style]
-help = 'validate code base using black code style'
-cmd = 'black . --check --diff --color'
+help = "validate code base using black code style"
+cmd = "black . --check --diff --color"
 
 [tool.poe.tasks.cov]
-help = 'check code coverage using pytest'
-cmd = 'pytest --cov'
+help = "check code coverage using pytest"
+cmd = "pytest --cov"
 
 [tool.ruff]
 line-length = 120
-lint.select = [
-    'E',     # error
-    'F',     # pyflakes
-    'I',     # isort
-    'W',     # warning
-    'N',     # pep8-naming
-    'UP',    # pyupgrade
-    'YTT',   # flake8-2020
-    'ASYNC', # flake8-async
-    'C4',    # flake8-comprehensions
-    'T10',   # flake8-debugger
-    'G',     # flake8-logging-format
-    'PIE',   # flake8-pie
-    'PYI',   # flake8-pyi
-    'PT',    # flake8-pytest-style
-    'Q',     # flake8-quotes
-    'SIM',   # flake8-simplify
-    'TCH',   # flake8-type-checking
-    'PTH',   # flake8-use-pathlib
-    'PGH',   # pygrep-hooks
-    'PERF',  # perflint
-    'RUF',   # ruff-specific rules
+indent-width = 4
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",     # error
+    "F",     # pyflakes
+    "I",     # isort
+    "W",     # warning
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "YTT",   # flake8-2020
+    "ASYNC", # flake8-async
+    "C4",    # flake8-comprehensions
+    "T10",   # flake8-debugger
+    "G",     # flake8-logging-format
+    "PIE",   # flake8-pie
+    "PYI",   # flake8-pyi
+    "PT",    # flake8-pytest-style
+    "Q",     # flake8-quotes
+    "SIM",   # flake8-simplify
+    "TCH",   # flake8-type-checking
+    "PTH",   # flake8-use-pathlib
+    "PGH",   # pygrep-hooks
+    "PERF",  # perflint
+    "RUF",   # ruff-specific rules
 ]
-lint.ignore = [
-    'C408',   # unnecessary-collection-call
-    'PT015',  # pytest-assert-always-false
-    'SIM118', # in-dict-keys
-    'PTH109', # os-getcwd
-    'PTH123', # builtin-open
-    'RUF012', # mutable-class-default
+ignore = [
+    "C408",   # unnecessary-collection-call
+    "PT015",  # pytest-assert-always-false
+    "SIM118", # in-dict-keys
+    "PTH109", # os-getcwd
+    "PTH123", # builtin-open
+    "RUF012", # mutable-class-default
 ]
-lint.fixable = ['E', 'F', 'I']
+fixable = ["E", "F", "I"]
 
 [tool.ruff.lint.flake8-quotes]
-docstring-quotes = 'double'
-inline-quotes = 'double'
+docstring-quotes = "double"
+inline-quotes = "double"
 
 [tool.ruff.format]
-quote-style = 'double'
+quote-style = "double"
+indent-style = "space"
 
 [tool.black]
 line-length = 120
 skip-string-normalization = true
+target-version = ["py313"]
