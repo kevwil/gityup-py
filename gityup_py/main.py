@@ -1,7 +1,6 @@
 import shutil
 import subprocess
 from pathlib import Path
-from subprocess import CalledProcessError
 
 import typer
 
@@ -17,7 +16,7 @@ def git_remote_exists(project: Path, branch: str):
             check=True,
         )
         return True
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         return False
 
 
@@ -46,7 +45,7 @@ def git_status_clean(project: Path):
     try:
         subprocess.run("git status | grep 'nothing to commit' >/dev/null", cwd=working_dir, check=True, shell=True)
         return True
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         return False
 
 
