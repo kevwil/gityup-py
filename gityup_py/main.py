@@ -5,7 +5,7 @@ from pathlib import Path
 import typer
 
 
-def git_remote_exists(project: Path, branch: str):
+def git_remote_exists(project: Path, branch: str) -> bool:
     working_dir = project.expanduser().resolve()
     remote_config = f"branch.{branch}.remote"
     try:
@@ -20,7 +20,7 @@ def git_remote_exists(project: Path, branch: str):
         return False
 
 
-def git_sync(project: Path):
+def git_sync(project: Path) -> None:
     working_dir = project.expanduser().resolve()
     r1 = subprocess.run(["git", "smart-pull"], cwd=working_dir)
     r1.check_returncode()
@@ -28,7 +28,7 @@ def git_sync(project: Path):
     r2.check_returncode()
 
 
-def get_git_branch_name(project: Path):
+def get_git_branch_name(project: Path) -> str:
     working_dir = project.expanduser().resolve()
     result = subprocess.run(
         ["git", "branch", "--show-current"],
@@ -40,7 +40,7 @@ def get_git_branch_name(project: Path):
     return result.stdout.strip()
 
 
-def git_status_clean(project: Path):
+def git_status_clean(project: Path) -> bool:
     working_dir = project.expanduser().resolve()
     try:
         subprocess.run("git status | grep 'nothing to commit' >/dev/null", cwd=working_dir, check=True, shell=True)
@@ -49,12 +49,12 @@ def git_status_clean(project: Path):
         return False
 
 
-def is_git(a_dir: Path):
+def is_git(a_dir: Path) -> bool:
     x = a_dir.expanduser().resolve() / ".git"
     return x.exists() and x.is_dir()
 
 
-def update_projects(root_path: Path):
+def update_projects(root_path: Path) -> None:
     for child in root_path.iterdir():
         if child.is_dir() and is_git(child):
             if not git_status_clean(child):
@@ -72,12 +72,12 @@ def update_projects(root_path: Path):
                         print("")
 
 
-def check_exec_exists(binary: str):
+def check_exec_exists(binary: str) -> bool:
     e = shutil.which(binary)
     return e is not None
 
 
-def parse_args(root: str):
+def parse_args(root: str) -> Path:
     p = Path(root).expanduser().resolve()
     if p.exists() and p.is_dir():
         return p.absolute()

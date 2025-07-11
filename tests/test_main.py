@@ -66,34 +66,47 @@ def test_get_git_branch_name(tmp_path):
 
 
 def test_git_remote_exists(tmp_path):
-    try:
-        subprocess.run(
-            ["git", "clone", "https://github.com/kevwil/git-smart.git"],
-            cwd=tmp_path,
-            check=True,
-            stderr=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-        )
-    except CalledProcessError as e:
-        pytest.fail("failed to clone git repo", e)
+    subprocess.run(
+        ["git", "clone", "https://github.com/kevwil/git-smart.git"],
+        cwd=tmp_path,
+        check=True,
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+    )
     project_path = tmp_path / "git-smart"
     assert app.git_remote_exists(project_path, "master")
 
 
+def test_git_remote_exists_fail(tmp_path):
+    subprocess.run(
+        ["git", "init"],
+        cwd=tmp_path,
+        check=True,
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+    )
+    assert app.git_remote_exists(tmp_path, "master") is False
+
+
 def test_git_sync(tmp_path):
-    try:
-        subprocess.run(
-            ["git", "clone", "https://github.com/kevwil/git-smart.git"],
-            cwd=tmp_path,
-            check=True,
-            stderr=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-        )
-    except CalledProcessError as e:
-        pytest.fail("failed to clone git repo", e)
+    subprocess.run(
+        ["git", "clone", "https://github.com/kevwil/git-smart.git"],
+        cwd=tmp_path,
+        check=True,
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+    )
 
     project_path = tmp_path / "git-smart"
-    try:
-        app.git_sync(project_path)
-    except CalledProcessError as e:
-        pytest.fail("error running git_sync", e)
+    app.git_sync(project_path)
+
+
+def test_main(tmp_path):
+    subprocess.run(
+        ["git", "clone", "https://github.com/kevwil/git-smart.git"],
+        cwd=tmp_path,
+        check=True,
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+    )
+    app.main(tmp_path)
