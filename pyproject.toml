@@ -6,18 +6,20 @@ authors = [{ name = "Kevin Williams", email = "kevwil@gmail.com" }]
 requires-python = ">=3.13"
 readme = "README.md"
 license = { text = "MIT" }
-dependencies = ["typer (>=0.16.0,<0.17.0)"]
+dependencies = [
+    "typer>0.26.0,<0.28",
+]
 
 [tool.uv]
 python-preference = "only-system"
-required-version = ">=0.7.16"
+required-version = ">=0.13.0"
 
 [dependency-groups]
 dev = [
-    "poethepoet>=0.35.0,<0.36",
-    "black>=25.1.0,<26",
-    "pytest-cov>=6.2.1,<7",
-    "ruff>=0.12.0,<0.13",
+    "poethepoet>=0.49.0,<0.50",
+    "black>=26.0.0,<27",
+    "pytest-cov>=7.1.0,<8",
+    "ruff>=0.17.0,<0.18",
 ]
 
 [build-system]

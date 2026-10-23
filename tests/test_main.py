@@ -1,3 +1,4 @@
+import re
 import subprocess
 from subprocess import CalledProcessError
 
@@ -20,7 +21,7 @@ def test_parse_args():
 
 
 def test_parse_args_fail():
-    with pytest.raises(ValueError, match="Given path '/does/not/exist' is not an existing directory."):
+    with pytest.raises(ValueError, match=re.escape("Given path '/does/not/exist' is not an existing directory.")):
         app.parse_args("/does/not/exist")
 
 
